@@ -1,0 +1,159 @@
+.meal-container {
+  padding: 25px;
+  background: #f8fafc;
+  min-height: 100vh;
+}
+
+.title {
+  font-size: 26px;
+  margin-bottom: 20px;
+  color: #1e293b;
+}
+
+/* SEARCH */
+.search {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+}
+
+/* FORM */
+.form-card {
+  background: white;
+  padding: 20px;
+  border-radius: 14px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
+  gap: 15px;
+}
+
+input, select {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+/* BUTTON */
+.btn {
+  margin-top: 15px;
+  padding: 10px 18px;
+  border: none;
+  background: linear-gradient(135deg,#6366f1,#8b5cf6);
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* TABLE */
+.table-card {
+  background: white;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 12px;
+}
+
+thead {
+  background: #f1f5f9;
+}
+
+tr:hover {
+  background: #f8fafc;
+}
+
+/* BADGES */
+.badge {
+  padding: 4px 8px;
+  border-radius: 6px;
+  color: white;
+  font-size: 12px;
+}
+
+.breakfast {
+  background: #22c55e;
+}
+
+.lunch {
+  background: #f59e0b;
+}
+
+.dinner {
+  background: #3b82f6;
+}
+
+/* DELETE */
+.delete-btn {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* NO DATA */
+.no-data {
+  text-align: center;
+  color: #64748b;
+}
+/* FILTERS */
+.filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+/* STATS */
+.stats {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.stats div {
+  background: white;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-weight: 500;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+/* TODAY HIGHLIGHT */
+.today {
+  background: #ecfeff;
+}
+
+/* BUTTONS */
+.edit-btn {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 5px 8px;
+  margin-right: 5px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.clear-btn {
+  margin-top: 10px;
+  background: #ef4444;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+}
