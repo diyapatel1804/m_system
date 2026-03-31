@@ -1,68 +1,57 @@
-import { NavLink, Outlet } from "react-router-dom";
-import { useEffect } from "react";
-import "../index.css";
+import { Outlet, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import "./Layout.css";
 
 function Layout() {
+  const [darkMode, setDarkMode] = useState(false);
+  const navigate = useNavigate();
 
-  // ✅ Load saved theme
-  useEffect(() => {
-    const theme = localStorage.getItem("theme");
-    if (theme === "dark") {
-      document.body.classList.add("dark");
-    }
-  }, []);
-
-  // ✅ Toggle theme
-  const toggleTheme = () => {
-    document.body.classList.toggle("dark");
-
-    if (document.body.classList.contains("dark")) {
-      localStorage.setItem("theme", "dark");
-    } else {
-      localStorage.setItem("theme", "light");
-    }
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
   };
 
   return (
-    <div className="container">
+    <div className={darkMode ? "app dark" : "app"}>
 
+      {/* Sidebar */}
       <div className="sidebar">
         <h2>Mess System</h2>
 
-        <NavLink to="/">Dashboard</NavLink>
-        <NavLink to="/students">Students</NavLink>
-        <NavLink to="/mealmenu">Meal Menu</NavLink>
-        <NavLink to="/payments">Payments</NavLink>
-        <NavLink to="/complaints">Complaints</NavLink>
-        <NavLink to="/attendance">Attendance</NavLink>
+        <a href="/">Dashboard</a>
+        <a href="/students">Students</a>
+        <a href="/mealmenu">Meal Menu</a>
+        <a href="/payments">Payments</a>
+        <a href="/complaints">Complaints</a>
+        <a href="/attendance">Attendance</a>
+
+        {/* ✅ ADD THIS */}
+        <a href="/inventory">Inventory</a>
+
+        <button className="logout-btn" onClick={handleLogout}>
+          Logout
+        </button>
       </div>
 
-      <div className="content">
+      {/* Main */}
+      <div className="main">
 
-        {/* 🔥 TOP BAR */}
-        <div style={{
-          display: "flex",
-          justifyContent: "flex-end",
-          marginBottom: "10px"
-        }}>
+        {/* Topbar */}
+        <div className="topbar">
           <button
-            onClick={toggleTheme}
-            style={{
-              padding: "8px 14px",
-              borderRadius: "8px",
-              border: "none",
-              background: "#6366f1",
-              color: "white",
-              cursor: "pointer"
-            }}
+            className="theme-toggle"
+            onClick={() => setDarkMode(!darkMode)}
           >
-            🌙 Toggle Mode
+            {darkMode ? "🌞" : "🌙"}
           </button>
         </div>
 
-        <Outlet />
-      </div>
+        {/* Content */}
+        <div className="content">
+          <Outlet />
+        </div>
 
+      </div>
     </div>
   );
 }

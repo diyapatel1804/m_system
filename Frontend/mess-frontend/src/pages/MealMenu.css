@@ -1,159 +1,106 @@
+/* Container & Title */
 .meal-container {
-  padding: 25px;
-  background: #f8fafc;
-  min-height: 100vh;
+  padding: 30px;
+  max-width: 900px;
+  margin: 0 auto;
+  font-family: "Segoe UI", sans-serif;
+  background: #f0f4f8;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
 }
 
 .title {
-  font-size: 26px;
-  margin-bottom: 20px;
-  color: #1e293b;
-}
-
-/* SEARCH */
-.search {
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 20px;
-  border-radius: 10px;
-  border: 1px solid #e2e8f0;
-}
-
-/* FORM */
-.form-card {
-  background: white;
-  padding: 20px;
-  border-radius: 14px;
-  margin-bottom: 25px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-}
-
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
-  gap: 15px;
-}
-
-input, select {
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #e2e8f0;
-}
-
-/* BUTTON */
-.btn {
-  margin-top: 15px;
-  padding: 10px 18px;
-  border: none;
-  background: linear-gradient(135deg,#6366f1,#8b5cf6);
-  color: white;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-/* TABLE */
-.table-card {
-  background: white;
-  padding: 20px;
-  border-radius: 14px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-th, td {
-  padding: 12px;
-}
-
-thead {
-  background: #f1f5f9;
-}
-
-tr:hover {
-  background: #f8fafc;
-}
-
-/* BADGES */
-.badge {
-  padding: 4px 8px;
-  border-radius: 6px;
-  color: white;
-  font-size: 12px;
-}
-
-.breakfast {
-  background: #22c55e;
-}
-
-.lunch {
-  background: #f59e0b;
-}
-
-.dinner {
-  background: #3b82f6;
-}
-
-/* DELETE */
-.delete-btn {
-  background: #ef4444;
-  color: white;
-  border: none;
-  padding: 6px 10px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-/* NO DATA */
-.no-data {
   text-align: center;
-  color: #64748b;
-}
-/* FILTERS */
-.filters {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 15px;
+  margin-bottom: 25px;
+  font-size: 2rem;
+  color: #1e3a8a;
+  letter-spacing: 1px;
 }
 
-/* STATS */
-.stats {
-  display: flex;
-  gap: 15px;
-  margin-bottom: 15px;
-}
-
-.stats div {
-  background: white;
-  padding: 10px 14px;
-  border-radius: 10px;
-  font-weight: 500;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-}
-
-/* TODAY HIGHLIGHT */
-.today {
-  background: #ecfeff;
-}
-
-/* BUTTONS */
-.edit-btn {
-  background: #3b82f6;
-  color: white;
+/* Admin buttons */
+.btn-admin {
+  padding: 8px 15px;
+  border-radius: 20px;
   border: none;
-  padding: 5px 8px;
-  margin-right: 5px;
-  border-radius: 6px;
   cursor: pointer;
+  background-color: #3b82f6;
+  color: white;
+  font-weight: 600;
+  transition: 0.3s;
+}
+.btn-admin:hover {
+  background-color: #2563eb;
 }
 
-.clear-btn {
-  margin-top: 10px;
-  background: #ef4444;
-  color: white;
-  padding: 8px 12px;
-  border: none;
-  border-radius: 6px;
+/* Weekly Overview Tabs */
+.weekly-overview {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.overview-day {
+  padding: 8px 15px;
+  border-radius: 25px;
+  cursor: pointer;
+  background-color: #e0e7ff;
+  color: #1e3a8a;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: 0.3s;
+}
+
+.overview-day:hover {
+  background-color: #c7d2fe;
+  transform: translateY(-2px);
+}
+
+.overview-day.today {
+  border: 2px dashed #f59e0b;
+}
+
+/* Day Menu */
+.day-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Meal Cards */
+.meal-card {
+  padding: 18px 20px;
+  border-radius: 12px;
+  color: #1f2937;
+  font-size: 1.1rem;
+  font-weight: 500;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+}
+
+.meal-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+}
+
+/* Color-coded meals */
+.meal-card.breakfast { background: #fef3c7; } /* Yellow */
+.meal-card.lunch { background: #dcfce7; }     /* Green */
+.meal-card.dinner { background: #fed7aa; }    /* Orange */
+.meal-card.snacks { background: #fbcfe8; }    /* Pink */
+
+/* Edit button (admin) */
+.edit-btn {
+  margin-left: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #2563eb;
+}
+.edit-btn:hover {
+  color: #1e40af;
 }

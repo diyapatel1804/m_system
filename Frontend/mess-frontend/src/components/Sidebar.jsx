@@ -29,6 +29,9 @@ position:"fixed"
 
 <li><Link style={{color:"white"}} to="/attendance">Attendance</Link></li>
 
+{/* ✅ ADD THIS LINE */}
+<li><Link style={{color:"white"}} to="/inventory">Inventory</Link></li>
+
 </ul>
 
 </div>

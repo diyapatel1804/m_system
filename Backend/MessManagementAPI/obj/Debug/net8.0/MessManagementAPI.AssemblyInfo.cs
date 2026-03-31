@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MessManagementAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+42e5c44aa7d0397f6d9772885b25f5ed26567d83")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0237c0961994a85e16f6b2f484ec5f38880a996a")]
 [assembly: System.Reflection.AssemblyProductAttribute("MessManagementAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MessManagementAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -17,7 +17,7 @@
 .card {
   padding: 20px;
   border-radius: 12px;
-  color: white;
+  color: rgb(11, 10, 10);
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   transition: 0.3s;
 }
@@ -64,7 +64,7 @@
 
 /* TABLE CARD */
 .table-card {
-  background: white;
+  background: #f3f1f9;
   margin-top: 20px;
   padding: 20px;
   border-radius: 10px;

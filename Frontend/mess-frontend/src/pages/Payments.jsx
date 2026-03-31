@@ -3,7 +3,6 @@ import API from "../services/api";
 import "./Payments.css";
 
 function Payments() {
-
   const [payments, setPayments] = useState([]);
   const [students, setStudents] = useState([]);
 
@@ -14,10 +13,19 @@ function Payments() {
   const [search, setSearch] = useState("");
   const [editId, setEditId] = useState(null);
 
+  // TREND CHART STATES
+  const [trend, setTrend] = useState("daily");
+  const [trendData, setTrendData] = useState([]);
+  const [scaleFactor, setScaleFactor] = useState(10);
+
   useEffect(() => {
     loadPayments();
     loadStudents();
   }, []);
+
+  useEffect(() => {
+    calculateTrend();
+  }, [payments, trend]);
 
   const loadPayments = async () => {
     const res = await API.get("/Payments");
@@ -29,17 +37,12 @@ function Payments() {
     setStudents(res.data);
   };
 
-  // ✅ ADD / UPDATE (FIXED DATE FORMAT)
+  // ADD / UPDATE PAYMENT
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!studentId || !amount || !paymentDate) return;
 
-    const data = {
-      studentId,
-      amount,
-      paymentDate: paymentDate // ✅ FIXED
-    };
+    const data = { studentId, amount, paymentDate };
 
     if (editId) {
       await API.put(`/Payments/${editId}`, { id: editId, ...data });
@@ -51,27 +54,76 @@ function Payments() {
     setStudentId("");
     setAmount("");
     setPaymentDate("");
-
     loadPayments();
   };
 
-  // ❌ DELETE
+  // DELETE PAYMENT
   const handleDelete = async (id) => {
     await API.delete(`/Payments/${id}`);
     loadPayments();
   };
 
-  // 🔍 SEARCH
+  // FILTER PAYMENTS
   const filtered = payments.filter(p =>
     p.studentId.toString().includes(search)
   );
 
-  // 💰 TOTAL
+  // TOTAL AMOUNT
   const totalAmount = payments.reduce((sum, p) => sum + Number(p.amount), 0);
+
+  // CALCULATE TREND DATA
+  const calculateTrend = () => {
+    let data = [];
+    const today = new Date();
+
+    if (trend === "daily") {
+      const last7Days = Array.from({ length: 7 }).map((_, i) => {
+        const d = new Date();
+        d.setDate(today.getDate() - i);
+        return d;
+      }).reverse();
+
+      data = last7Days.map(d => {
+        const label = d.toLocaleDateString("en-IN", { day: "numeric", month: "short" });
+        const total = payments
+          .filter(p => new Date(p.paymentDate).toDateString() === d.toDateString())
+          .reduce((sum, p) => sum + Number(p.amount), 0);
+        return { label, total };
+      });
+
+    } else if (trend === "weekly") {
+      data = Array.from({ length: 4 }).map((_, i) => {
+        const start = new Date(today);
+        start.setDate(today.getDate() - today.getDay() - 7 * i);
+        const end = new Date(start);
+        end.setDate(start.getDate() + 6);
+        const total = payments.reduce((sum, p) => {
+          const pd = new Date(p.paymentDate);
+          return pd >= start && pd <= end ? sum + Number(p.amount) : sum;
+        }, 0);
+        const label = `W${4-i}`;
+        return { label, total };
+      }).reverse();
+
+    } else if (trend === "monthly") {
+      data = Array.from({ length: 6 }).map((_, i) => {
+        const d = new Date(today.getFullYear(), today.getMonth() - i, 1);
+        const total = payments.reduce((sum, p) => {
+          const pd = new Date(p.paymentDate);
+          return pd.getMonth() === d.getMonth() && pd.getFullYear() === d.getFullYear() ? sum + Number(p.amount) : sum;
+        }, 0);
+        const label = d.toLocaleString("en-IN", { month: "short" });
+        return { label, total };
+      }).reverse();
+    }
+
+    const maxTotal = Math.max(...data.map(d => d.total));
+    setScaleFactor(maxTotal > 0 ? maxTotal / 200 : 1);
+    setTrendData(data);
+  };
 
   return (
     <div className="payments-container">
-
       <h2 className="title">Payments Management</h2>
 
       {/* STATS */}
@@ -88,11 +140,10 @@ function Payments() {
         onChange={(e) => setSearch(e.target.value)}
       />
 
-      {/* FORM */}
+      {/* PAYMENT FORM */}
       <div className="form-card">
         <form onSubmit={handleSubmit}>
           <div className="form-grid">
-
             <select
               value={studentId}
               onChange={(e) => setStudentId(e.target.value)}
@@ -100,9 +151,7 @@ function Payments() {
             >
               <option value="">Select Student</option>
               {students.map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.name}
-                </option>
+                <option key={s.id} value={s.id}>{s.name}</option>
               ))}
             </select>
 
@@ -114,14 +163,12 @@ function Payments() {
               required
             />
 
-            {/* ✅ SINGLE DATE INPUT */}
             <input
               type="date"
               value={paymentDate}
               onChange={(e) => setPaymentDate(e.target.value)}
               required
             />
-
           </div>
 
           <button className="btn">
@@ -130,7 +177,34 @@ function Payments() {
         </form>
       </div>
 
-      {/* TABLE */}
+      {/* TREND SELECTOR */}
+      <div className="trend-selector">
+        <label>View Trend: </label>
+        <select value={trend} onChange={(e) => setTrend(e.target.value)}>
+          <option value="daily">Daily</option>
+          <option value="weekly">Weekly</option>
+          <option value="monthly">Monthly</option>
+        </select>
+      </div>
+
+      {/* TREND CHART */}
+      <div className="chart-card">
+        <h3>Payments Overview ({trend})</h3>
+        <div className="chart">
+          {trendData.map(item => (
+            <div key={item.label} className="bar-container">
+              <div
+                className="bar"
+                style={{ height: `${Math.min(item.total / scaleFactor, 200)}px` }}
+                title={`₹${item.total}`}
+              ></div>
+              <span className="bar-label">{item.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* PAYMENTS TABLE */}
       <div className="table-card">
         <table>
           <thead>
@@ -147,20 +221,15 @@ function Payments() {
             {filtered.length > 0 ? (
               filtered.map((p) => {
                 const student = students.find(s => s.id === p.studentId);
-
                 return (
                   <tr key={p.id}>
                     <td>{p.id}</td>
                     <td>{student ? student.name : p.studentId}</td>
                     <td>₹{p.amount}</td>
-
-                    {/* ✅ FIXED DATE DISPLAY */}
-                    <td>
-                      {p.paymentDate
-                        ? new Date(p.paymentDate + "T00:00:00").toLocaleDateString("en-IN")
-                        : "-"}
-                    </td>
-
+                    <td>{p.paymentDate
+                      ? new Date(p.paymentDate + "T00:00:00").toLocaleDateString("en-IN")
+                      : "-"
+                    }</td>
                     <td>
                       <button
                         className="edit-btn"
@@ -170,31 +239,24 @@ function Payments() {
                           setAmount(p.amount);
                           setPaymentDate(p.paymentDate?.slice(0,10));
                         }}
-                      >
-                        Edit
-                      </button>
+                      >Edit</button>
 
                       <button
                         className="delete-btn"
                         onClick={() => handleDelete(p.id)}
-                      >
-                        Delete
-                      </button>
+                      >Delete</button>
                     </td>
                   </tr>
-                );
+                )
               })
             ) : (
               <tr>
-                <td colSpan="5" className="no-data">
-                  No payments found
-                </td>
+                <td colSpan="5" className="no-data">No payments found</td>
               </tr>
             )}
           </tbody>
         </table>
       </div>
-
     </div>
   );
 }
